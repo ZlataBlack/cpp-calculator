@@ -1,12 +1,11 @@
-// В этом файле определения функций.
-// За основу возьмите решение предыдущей задачи.
-
 #include "calculator.h"
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <vector>
+#include <algorithm> // Для std::find
 
-//Чтение числа из потока ввода 
+// Чтение числа из потока ввода 
 bool ReadNumber(Number& result) {
     if (std::cin >> result) {
         return true;
@@ -15,18 +14,21 @@ bool ReadNumber(Number& result) {
     return false;
 }
 
-//Локальные переменные 
+// Локальные переменные 
 bool RunCalculatorCycle () {
     Number current_value = 0.0;
     Number memory_value = 0.0;
     bool memory_initialized = false;
 
-//Чтение первого числа при запуске программы
+// Чтение первого числа при запуске программы
     if (!ReadNumber(current_value)) {
         return false;
     }
-//Чтение команд 
+
+    // Контейнер с операциями 
+    const std::vector<std::string> operations = {"+", "-", "*", "/", "**", ":"};
     std::string token;
+
     while (std::cin >> token) {
         if (token == "q") {
             return true;
@@ -48,7 +50,9 @@ bool RunCalculatorCycle () {
             }
             current_value = memory_value; //Загружаем значение из памяти 
         }
-        else if (token == "+" || token == "-" || token == "*" || token == "/" || token == "**" || token == ":") {
+
+        // Ищет совпадение token от начала до конца
+        else if (std::find(operations.begin(), operations.end(), token) != operations.end()) {
             Number operand;
             if (!ReadNumber(operand)) {
                 return false;
@@ -65,15 +69,15 @@ bool RunCalculatorCycle () {
             }
             else if (token == "/"){
                 current_value /= operand;
-            }
+            }  
             else if (token == "**") {
                 current_value = std::pow(current_value, operand);
             }
             else if (token == ":") {
                 current_value = operand;
-            }
+            } 
         }
-        // ОБработака неизвестной команды 
+        // Обработака неизвестной команды 
         else {
             std::cerr << "Error: Unknown token "  << token << std::endl;
             return false;
@@ -81,3 +85,5 @@ bool RunCalculatorCycle () {
     }
     return true;
 }
+
+
