@@ -3,7 +3,9 @@
 
 #include <QPushButton>
 
-QString RemoveTrailingZeroes(const QString& text) {
+namespace {
+
+QString RemoveLeadingZeroes(const QString& text) {
     for (qsizetype i = 0; i < text.size(); ++i) {
         if (text.at(i) != '0') {
             return text.mid(i);
@@ -13,17 +15,21 @@ QString RemoveTrailingZeroes(const QString& text) {
 }
 
 QString NormalizeNumber(const QString& text) {
-    if (text.isEmpty()) {
+    if (text.isEmpty() || text == "-") {
         return "0";
     }
     if (text.startsWith('.')) {
         return NormalizeNumber("0" + text);
     }
     if (text.startsWith('-')) {
-        return "-" + NormalizeNumber(text.mid(1));
+        QString rest = NormalizeNumber(text.mid(1));
+        if (rest == "0") {
+            return "0";
+        }
+        return "-" + rest;
     }
     if (text.startsWith('0') && !text.startsWith("0.")) {
-        return NormalizeNumber(RemoveTrailingZeroes(text));
+        return NormalizeNumber(RemoveLeadingZeroes(text));
     }
     return text;
 }
@@ -44,6 +50,8 @@ QString OpToString(Operation operation) {
         return "";
     }
     return "";
+}
+
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -99,7 +107,11 @@ void MainWindow::SetText(const QString& text) {
     active_number_ = input_number_.toDouble();
 }
 
+// Дописать
 void MainWindow::AddText(const QString& suffix) {
+    if (current_operation_ == Operation::NO_OPERATION) {
+        ui_->l_formula->clear();
+    }
     SetText(input_number_ + suffix);
 }
 
@@ -119,6 +131,9 @@ void MainWindow::OnDotButtonClicked() {
 }
 
 void MainWindow::OnSignButtonClicked() {
+    if (input_number_.isEmpty()) {
+        return;
+    }
     if (input_number_.startsWith('-')) {
         SetText(input_number_.mid(1));
     } else {
