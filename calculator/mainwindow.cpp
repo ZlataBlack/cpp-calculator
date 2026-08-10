@@ -100,14 +100,12 @@ MainWindow::~MainWindow()
     delete ui_;
 }
 
-// Точка сохранения
 void MainWindow::SetText(const QString& text) {
     input_number_ = NormalizeNumber(text);
     ui_->l_result->setText(input_number_);
     active_number_ = input_number_.toDouble();
 }
 
-// Дописать
 void MainWindow::AddText(const QString& suffix) {
     if (current_operation_ == Operation::NO_OPERATION) {
         ui_->l_formula->clear();
@@ -249,4 +247,8 @@ void MainWindow::OnMemoryLoadButtonClicked() {
     active_number_ = memory_value_;
     ui_->l_result->setText(QString::number(active_number_));
     input_number_ = QString();
+
+    if (current_operation_ == Operation::NO_OPERATION) {
+        ui_->l_formula->clear();
+    }
 }
