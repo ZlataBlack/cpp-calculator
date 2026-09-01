@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>520</height>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,45 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QComboBox" name="cmb_controller">
+      <item>
+       <property name="text">
+        <string>double</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>float</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>uint8_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>int</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>int64_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>size_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Rational</string>
+       </property>
+      </item>
+     </widget>
+    </item>
     <item>
      <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,1">
       <item row="0" column="0">
@@ -335,7 +374,7 @@
          </widget>
         </item>
         <item row="5" column="0">
-         <widget class="QPushButton" name="button_dot">
+         <widget class="QPushButton" name="tb_extra">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -396,3 +435,4 @@
  <resources/>
  <connections/>
 </ui>
+
