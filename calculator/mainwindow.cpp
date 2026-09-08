@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QString>
 #include <QMap>
+#include <QHash>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -67,27 +68,20 @@ MainWindow::MainWindow(QWidget *parent)
         if (!controller_callback_) {
             return;
         }
-        if (text == "double") {
-            controller_callback_(ControllerType::DOUBLE);
-        }
-        else if (text == "float") {
-            controller_callback_(ControllerType::FLOAT);
-        }
-        else if (text == "uint8_t") {
-            controller_callback_(ControllerType::UINT8_T);
-        }
-        else if (text == "int") {
-            controller_callback_(ControllerType::INT);
-        }
-        else if (text == "int64_t") {
-            controller_callback_(ControllerType::INT64_T);
-        }
-        else if (text == "size_t") {
-            controller_callback_(ControllerType::SIZE_T);
-        }
-        else if (text == "Rational") {
-            controller_callback_(ControllerType::RATIONAL);
-        }
+        static const QHash<QString, ControllerType> type_mapping = {
+                   {"double", ControllerType::DOUBLE},
+                   {"float", ControllerType::FLOAT},
+                   {"uint8_t", ControllerType::UINT8_T},
+                   {"int", ControllerType::INT},
+                   {"int64_t", ControllerType::INT64_T},
+                   {"size_t", ControllerType::SIZE_T},
+                   {"Rational", ControllerType::RATIONAL}
+               };
+
+               auto it = type_mapping.find(text);
+               if (it != type_mapping.end()) {
+                   controller_callback_(it.value());
+               }
     });
 }
 
